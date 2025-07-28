@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+    <!-- Page header container (currently empty) -->
+    <div class="container header-container">
+        <div class="row">
+            <div class="col"></div> <!-- Placeholder for optional title/banner -->
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <!-- Background overlay (white layer behind content to improve readability over the background image) -->
+    <div class="overlay"></div>
+
+    <!-- Full-width container for the product detail layout -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Image column: full-width on small screens, half on medium, third on large -->
+            <div class="col-12 col-md-6 col-lg-4 offset-lg-2">
+                <div class="image-container my-5">
+                    {% if product.image %}
+                        <!-- If product has an image, make it clickable to view in full size -->
+                        <a href="{{ product.image.url }}" target="_blank">
+                            <img class="card-img-top img-fluid" src="{{ product.image.url }}" alt="{{ product.name }}">
+                        </a>
+                    {% else %}
+                        <!-- Fallback image if no product image is available -->
+                        <a href="">
+                            <img class="card-img-top img-fluid" src="{{ MEDIA_URL }}noimage.png" alt="{{ product.name }}">
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Product details column -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="product-details-container mb-5 mt-md-5">
+                    <!-- Product name -->
+                    <p class="mb-0">{{ product.name }}</p>
+
+                    <!-- Product price styled as prominent lead text -->
+                    <p class="lead mb-0 text-left font-weight-bold">${{ product.price }}</p>
+
+                    <!-- Product rating if available -->
+                    {% if product.rating %}
+                        <small class="text-muted">
+                            <i class="fas fa-star mr-1"></i>{{ product.rating }} / 5
+                        </small>
+                    {% else %}
+                        <small class="text-muted">No Rating</small>
+                    {% endif %}
+
+                    <!-- Product description (paragraph spacing added) -->
+                    <p class="mt-3">{{ product.description }}</p>
+                </div>
+            </div>
+        </div> <!-- End row -->
+    </div> <!-- End container-fluid -->
+{% endblock %}
