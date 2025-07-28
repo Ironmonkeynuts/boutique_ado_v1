@@ -60,6 +60,16 @@ body {
     background: #000 !important;
 }
 
+.overlay {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    background: white;
+    z-index: 0; /* sits behind the content and in front of background image */
+}
+
 /* -------------------------------- Media Queries */
 
 /* Slightly larger container on xl screens */
