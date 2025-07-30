@@ -48,6 +48,7 @@ body {
     color: white;
 }
 
+/* Custom styles for the product list */
 .text-black {
     color: #000 !important;
 }
@@ -60,6 +61,7 @@ body {
     background: #000 !important;
 }
 
+/* Overlay */
 .overlay {
     height: 100%;
     width: 100%;
@@ -70,9 +72,23 @@ body {
     z-index: -1; /* sits behind the content and in front of background image */
 }
 
+/* Category Badges */
 a.category-badge > span.badge:hover {
     background: #212529 !important;
     color: #fff !important;
+}
+
+/* Return to top button */
+.btt-button {
+    height: 47px;
+    width: 47px;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+}
+
+.btt-link {
+    cursor: pointer;
 }
 
 
@@ -85,7 +101,7 @@ a.category-badge > span.badge:hover {
   }
 }
 
-/* fixed top navbar only on medium and up */
+/* Fix top navbar only on medium and up */
 @media (min-width: 992px) {
     .fixed-top-desktop-only {
         position: fixed;
@@ -100,7 +116,7 @@ a.category-badge > span.badge:hover {
     }
 }
 
-/* pad the top when navbar is collapsed on mobile */
+/* Pad the top when navbar is collapsed on mobile */
 @media (max-width: 991px) {
     .header-container {
         padding-top: 116px;
