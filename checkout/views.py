@@ -53,7 +53,8 @@ def checkout(request):
                     # If item_data is a dictionary, product has sizes
                     else:
                         # Iterate through the sizes and quantities
-                        for size, quantity in item_data['items_by_size'].items():
+                        for size, quantity in item_data[
+                                'items_by_size'].items():
                             order_line_item = OrderLineItem(
                                 order=order,
                                 product=product,
@@ -90,7 +91,7 @@ def checkout(request):
             messages.error(
                 request, "There is nothing in your bag at the moment")
             return redirect(reverse('products'))
-        
+
         current_bag = bag_contents(request)
         total = current_bag['grand_total']
         stripe_total = round(total * 100)
