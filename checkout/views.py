@@ -1,7 +1,7 @@
 from django.shortcuts import (
     render, redirect, reverse, get_object_or_404, HttpResponse)
-from django.views.decorators.http import require_POST
 from django.contrib import messages
+from django.views.decorators.http import require_POST
 from django.conf import settings
 
 from .forms import OrderForm
@@ -21,12 +21,16 @@ def cache_checkout_data(request):
         pid = request.POST.get('client_secret').split('_secret')[0]
         # Set the Stripe secret key
         stripe.api_key = settings.STRIPE_SECRET_KEY
+
         # Modify the payment intent with the metadata
-        stripe.PaymentIntent.modify(pid, metadata={
-            'bag': json.dumps(request.session.get('bag', {})),
-            'save_info': request.POST.get('save_info'),
-            'username': request.user,
-        })
+        stripe.PaymentIntent.modify(
+            pid,
+            metadata={
+                'bag': json.dumps(request.session.get('bag', {})),
+                'save_info': request.POST.get('save_info'),
+                'username': request.user,
+            }
+        )
         return HttpResponse(status=200)
     except Exception as e:
         # If an exception occurs, display an error message
@@ -62,7 +66,12 @@ def checkout(request):
         # Check if the form is valid
         if order_form.is_valid():
             # If the form is valid, save the order
-            order = order_form.save()
+            order = order_form.save(commit=False)
+            pid = request.POST.get('client_secret').split('_secret')[0]
+            order.stripe_pid = pid
+            order.original_bag = json.dumps(bag)
+            order.save()
+            # Iterate through the items in the bag
             for item_id, item_data in bag.items():
                 try:
                     # Get the product from the database
