@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db.models.functions import Lower
 
@@ -83,8 +84,15 @@ def product_detail(request, product_id):
     return render(request, 'products/product_detail.html', context)
 
 
+@login_required
 def add_product(request):
     """ Add a product to the store """
+    # Check if the user is a superuser
+    if not request.user.is_superuser:
+        # User is not a superuser, show an error message and redirect
+        messages.error(request, 'Sorry, only store owners can do that.')
+        return redirect(reverse('home'))
+
     # Check if the request is a POST request
     if request.method == 'POST':
         # Bind the form to the request data
@@ -119,8 +127,15 @@ def add_product(request):
     return render(request, template, context)
 
 
+@login_required
 def edit_product(request, product_id):
     """ Edit a product in the store """
+    # Check if the user is a superuser
+    if not request.user.is_superuser:
+        # User is not a superuser, show an error message and redirect
+        messages.error(request, 'Sorry, only store owners can do that.')
+        return redirect(reverse('home'))
+
     # Get the product object
     product = get_object_or_404(Product, pk=product_id)
     # Check if the request is a POST request
@@ -159,8 +174,15 @@ def edit_product(request, product_id):
     return render(request, template, context)
 
 
+@login_required
 def delete_product(request, product_id):
     """ Delete a product from the store """
+    # Check if the user is a superuser
+    if not request.user.is_superuser:
+        # User is not a superuser, show an error message and redirect
+        messages.error(request, 'Sorry, only store owners can do that.')
+        return redirect(reverse('home'))
+
     # Get the product object
     product = get_object_or_404(Product, pk=product_id)
     # Delete the product
