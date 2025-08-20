@@ -92,11 +92,11 @@ def add_product(request):
         # Check if the form is valid
         if form.is_valid():
             # Save the form
-            form.save()
+            product = form.save()
             # Show a success message
             messages.success(request, 'Successfully added product!')
-            # Redirect to the add product page
-            return redirect(reverse('add_product'))
+            # Redirect to the product detail page
+            return redirect(reverse('product_detail', args=[product.id]))
         # If the form is not valid
         else:
             # Show an error message
@@ -157,3 +157,15 @@ def edit_product(request, product_id):
 
     # Render the template with the context
     return render(request, template, context)
+
+
+def delete_product(request, product_id):
+    """ Delete a product from the store """
+    # Get the product object
+    product = get_object_or_404(Product, pk=product_id)
+    # Delete the product
+    product.delete()
+    # Show a success message
+    messages.success(request, 'Product deleted!')
+    # Redirect to the products page
+    return redirect(reverse('products'))
